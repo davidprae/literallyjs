@@ -1,0 +1,20 @@
+{
+  "name": "literallyjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.15.3",
+    "fs-path": "0.0.23"
+  },
+  "devDependencies": {
+    "js-yaml": "^3.9.0",
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --watch app.js --watch content"
+  },
+  "author": "",
+  "license": "ISC"
+}

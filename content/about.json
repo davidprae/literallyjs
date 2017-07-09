@@ -1,0 +1,5 @@
+{
+  "title": "About Page",
+  "template": "default",
+  "content": "<h1>About Page</h1><p>Some content.</p><p>More content.</p>"
+}
