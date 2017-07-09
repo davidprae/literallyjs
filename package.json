@@ -13,7 +13,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --watch app.js --watch content"
+    "start": "nodemon --watch app.js --watch content --watch templates"
   },
   "author": "",
   "license": "ISC"

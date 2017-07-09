@@ -6,7 +6,7 @@ module.exports = (contentObj) => `
       <title>${ contentObj.title }</title>
     </head>
     <body>
-      <p>Default Template</p>
+      <p>Contact Template</p>
       ${ contentObj.content }
     </body>
   </html
