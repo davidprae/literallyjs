@@ -6,37 +6,64 @@ const fs = require('fs'),
       fsPath = require('fs-path'), //easy way to write to a file and create needed dirs
       yaml = require('js-yaml'), //for converting YAML to JSON
       express = require('express'),
-      templater = require('./templates/default');
+      templater = require('./templates'); //the module that combines a content page with a layout
 
 const app = express(),
       port = 8080;
 
 //serve from static directory 'build'
-app.use(express.static('build'));
+app.use(express.static('build')); 
 
 //set up server
-app.listen(port, () => {
+app.listen(port, (err) => {
+  if(err) return err;
   console.log(`App listening on port ${port}`);
 })
 
-//transform files in /content from json or yaml to js objects pass, them to render function and then create files from result and put in /build
+//1. reads the /content directory, finds the files in it,
+//2. 'for' each of those files:
+//3. check if it's JSON or YAML,
+//4. get the contents of the file with readFileSync,
+//5. appropriately transform the content if json or yaml into a plain JS object
+//6. Create the file. If the file is straightup 'index' then just put it in the root of /build as the index file
+//    else, rename the file to index.html BUT put it in a folder that is named after the OG filename
+//    ex: about.json -> /build/about/index.html
+
+//1
 fs.readdir('./content', (err, files)=> {
+
+  //2
   for(let i = 0; i < files.length; i++) {
-    if(path.extname(files[i]) == '.json') {
+
+    //3
+    if(path.extname(files[i]) == '.json' || '.yml') {
+
+      //4
       let contentObj = fs.readFileSync(`./content/${files[i]}`, 'utf8');
-      contentObj = JSON.parse(contentObj);
-      if(files[i] == 'index.json') {
-        fsPath.writeFileSync(`./build/index.html`, templater(contentObj));
-      } else {
-        fsPath.writeFileSync(`./build/${files[i].replace(/\.[^/.]+$/, "")}/index.html`, templater(contentObj));
+
+      //5
+      switch(path.extname(files[i])) {
+        case '.json' :
+          contentObj = JSON.parse(contentObj);
+          break;
+        case '.yml' :
+          contentObj = yaml.safeLoad(fs.readFileSync(`./content/${files[i]}`, 'utf8'));
+          break;
+        default:
+          'error'
+          break;
       }
-    } else if(path.extname(files[i]) == '.yml' ) {
-      let contentObj = yaml.safeLoad(fs.readFileSync(`./content/${files[i]}`, 'utf8'));
-      if(files[i] == 'index.yml') {
-        fsPath.writeFileSync(`./build/index.html`, templater(contentObj));
+
+      //6
+      if(files[i].replace(/\.[^/.]+$/, "") == 'index') {
+        templater(contentObj, `./build/index.html`, createFile );
       } else {
-        fsPath.writeFileSync(`./build/${files[i].replace(/\.[^/.]+$/, "")}/index.html`, templater(contentObj));
+        templater(contentObj, `./build/${files[i].replace(/\.[^/.]+$/, "")}/index.html`, createFile );
       }
     }
   }
 })
+
+const createFile = (directory, content) => {
+  fsPath.writeFile(directory, content);
+}

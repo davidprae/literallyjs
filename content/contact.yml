@@ -1,3 +1,6 @@
 title: "Contact Page"
 template: contact
-content: "<h1>Contact Page</h1><p>Some content.</p><p>More content.</p>"
+content: |
+  <h1>Contact Page</h1>
+  <p>Contact page content.</p>
+  <p>More content.</p>
