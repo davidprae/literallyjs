@@ -25,14 +25,9 @@ app.listen(port, (err) => {
 //3. check if it's JSON or YAML,
 //4. get the contents of the file with readFileSync,
 //5. appropriately transform the content if json or yaml into a plain JS object
-//6. If the file is straightup 'index' then just put it in the root of /build as the index file
+//6. Create the file. If the file is straightup 'index' then just put it in the root of /build as the index file
 //    else, rename the file to index.html BUT put it in a folder that is named after the OG filename
 //    ex: about.json -> /build/about/index.html
-//    THIS IS WHERE THE PROBLEM IS, you can't return from in an async function (so far as I know),
-//    you need a callback to do the deed but I can't figure it out
-//    logging 'files' works but returning does not
-//    You can see in the console that the content and templates are mixed correctly at least
-//    note: the 'replace' is just getting rid the file extension (I'm naming the folder right there)
 
 //1
 fs.readdir('./content', (err, files)=> {
@@ -61,16 +56,14 @@ fs.readdir('./content', (err, files)=> {
 
       //6
       if(files[i].replace(/\.[^/.]+$/, "") == 'index') {
-        fsPath.writeFile(`./build/index.html`, templater(contentObj, (files) => {
-          // return files;
-          console.log(files)
-        }));
+        templater(contentObj, `./build/index.html`, createFile );
       } else {
-        fsPath.writeFile(`./build/${files[i].replace(/\.[^/.]+$/, "")}/index.html`, templater(contentObj, (files) => {
-          // return files;
-          console.log(files)
-        }));
+        templater(contentObj, `./build/${files[i].replace(/\.[^/.]+$/, "")}/index.html`, createFile );
       }
     }
   }
 })
+
+const createFile = (directory, content) => {
+  fsPath.writeFile(directory, content);
+}

@@ -1,5 +1,5 @@
 {
-  "template": "contact",
   "title": "Home Page",
-  "content": "<h1>Home Page</h1><p>Some content.</p><p>More content.</p>"
+  "template": "default",
+  "content": "<h1>Home Page</h1><p>Home page content.</p><p>More content.</p>"
 }

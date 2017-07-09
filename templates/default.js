@@ -6,8 +6,8 @@ module.exports = (contentObj) => `
       <title>${ contentObj.title }</title>
     </head>
     <body>
-      <p>Default Template</p>
       ${ contentObj.content }
+      <footer>This is the default template.</footer>
     </body>
   </html
 `;

@@ -31,10 +31,11 @@ const makePage = (files, contentObj) => {
 }
 
 //this is the function that is actually exported when requiring this file.
-//take an object which is the object'd version of a JSON or YAML file, called from app.js
-//note that this 'callback' is defined in app.js (just an anon function)
-module.exports = (contentObj, callback) => {
+//takes an object which is the object'd version of a JSON or YAML file,
+//and the directory to save to, and a callback, called from app.js
+//note that the 'callback' is defined in app.js 
+module.exports = (contentObj, directory, callback) => {
   getTemplateFileNames((files) => {
-    callback(makePage(files, contentObj));
+    callback( directory, makePage(files, contentObj));
   })
 }
