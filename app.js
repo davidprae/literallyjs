@@ -6,7 +6,7 @@ const fs = require('fs'),
       fsPath = require('fs-path'), //easy way to write to a file and create needed dirs
       yaml = require('js-yaml'), //for converting YAML to JSON
       express = require('express'),
-      templater = require('./templates');
+      templater = require('./templates/default');
 
 const app = express(),
       port = 8080;
